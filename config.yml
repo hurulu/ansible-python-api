@@ -1,0 +1,24 @@
+kernel:
+  hosts: all
+  chk_cmd: uname -r
+compute_packages:
+  hosts: "*-nova*"
+  chk_cmd: rpm -q
+  list:
+  - openstack-nova-compute
+  - openstack-nova-common
+  - openstack-neutron
+  - openstack-neutron-openvswitch
+  - openstack-ceilometer-common
+  - openstack-ceilometer-compute
+  - openstack-neutron-ml2
+  - libvirt
+  - qemu-kvm-common-rhev
+  - qemu-kvm-rhev
+  - qemu-img-rhev
+bonding:
+  hosts: "*-nova*"
+  chk_cmd: cat /proc/net/bonding/bond0 |grep  'MII Status'
+raid:
+  hosts: "*-nova*"
+  chk_cmd: /opt/MegaRAID/storcli/storcli64 /c0 /v1 show |grep RAID
