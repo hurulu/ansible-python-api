@@ -4,6 +4,7 @@ import ansible.runner
 import yaml
 import tempfile
 import os
+import sys
 
 def read_conf(conf_file):
     with open(conf_file, 'r') as ymlfile:
@@ -53,14 +54,16 @@ def write_details(result):
         return temp.name
 
 if __name__ == '__main__':
-    conf = "config.yml"
+    conf = __file__.replace(".py",".yml")
+    if not os.path.isfile(conf):
+        print "ERROR : %s is not found." % conf
+        sys.exit(1)
     cfg = read_conf(conf)
     for item in cfg:
         chk_hosts = cfg[item]['hosts']
 	#host_count = ansible_host_count(chk_hosts)
         chk_cmd = cfg[item]['chk_cmd']
         heading = '-' * 20 + 'Checking ' + item + ' on host group ' + chk_hosts + '-' * 60
-        #print "%s Checking %s on %s  %s" % ('-' * 50, item, chk_hosts, '-' * 50)
         print heading [0:88]
 	if 'list' in cfg[item]:
             for i in cfg[item]['list']:
